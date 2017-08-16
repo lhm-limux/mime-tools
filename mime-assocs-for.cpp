@@ -36,8 +36,7 @@ int main(int argc, char *argv[])
 
     if (arguments.length() != 1)
     {
-        parser.showHelp();
-        return 1;
+        parser.showHelp(1);
     }
 
     QString mimeType = arguments.at(0);
@@ -45,6 +44,11 @@ int main(int argc, char *argv[])
     QTextStream out(stdout);
 
     KService::List services = KMimeTypeTrader::self()->query(mimeType);
+
+    if (services.empty())
+    {
+        return 2;
+    }
 
     for (auto service: services)
     {
