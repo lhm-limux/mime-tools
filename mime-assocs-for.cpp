@@ -20,41 +20,6 @@
 #include <QTimer>
 #include <KMimeTypeTrader>
 
-class MimeAssociations : public QObject
-{
-    Q_OBJECT
-public:
-    MimeAssociations(const QString mimeType, QObject *parent);
-public slots:
-    void process();
-signals:
-    void done();
-private:
-    QString mimeType;
-};
-
-#include "mime-assocs-for.moc"
-
-MimeAssociations::MimeAssociations(const QString mimeType, QObject *parent=0)
-    :QObject(parent)
-{
-    this->mimeType = mimeType;
-}
-
-void MimeAssociations::process()
-{
-    QTextStream out(stdout);
-
-    KService::List services = KMimeTypeTrader::self()->query(mimeType);
-
-    for (auto service: services)
-    {
-        out << service->entryPath() << endl;
-    }
-
-    emit done();
-}
-
 int main(int argc, char *argv[])
 {
     QCoreApplication application(argc, argv);
@@ -75,9 +40,15 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    MimeAssociations *task = new MimeAssociations(arguments.at(0), &application);
-    QObject::connect(task, SIGNAL(done()), &application, SLOT(quit()));
-    QTimer::singleShot(0, task, SLOT(process()));
+    QString mimeType = arguments.at(0);
 
-    return application.exec();
+    QTextStream out(stdout);
+
+    KService::List services = KMimeTypeTrader::self()->query(mimeType);
+
+    for (auto service: services)
+    {
+        out << service->entryPath() << endl;
+    }
+    return 0;
 }
