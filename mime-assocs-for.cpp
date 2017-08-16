@@ -24,35 +24,32 @@ class MimeAssociations : public QObject
 {
     Q_OBJECT
 public:
-    MimeAssociations(const QString mime, QObject *parent);
-    ~MimeAssociations();
+    MimeAssociations(const QString mimeType, QObject *parent);
 public slots:
     void process();
 signals:
     void done();
 private:
-    QString mime;
+    QString mimeType;
 };
 
 #include "mime-assocs-for.moc"
 
-MimeAssociations::MimeAssociations(const QString mime, QObject *parent=0)
+MimeAssociations::MimeAssociations(const QString mimeType, QObject *parent=0)
     :QObject(parent)
 {
-    this->mime = mime;
+    this->mimeType = mimeType;
 }
-
-MimeAssociations::~MimeAssociations() {}
 
 void MimeAssociations::process()
 {
     QTextStream out(stdout);
 
-    KService::List services = KMimeTypeTrader::self()->query(mime);
+    KService::List services = KMimeTypeTrader::self()->query(mimeType);
 
-    for (int i=0; i<services.length(); ++i)
+    for (auto service: services)
     {
-        out << services.at(i)->entryPath() << endl;
+        out << service->entryPath() << endl;
     }
 
     emit done();
