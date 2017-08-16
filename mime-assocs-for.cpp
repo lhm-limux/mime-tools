@@ -18,8 +18,7 @@
 #include <QCommandLineParser>
 #include <QTextStream>
 #include <QTimer>
-//#include <KService>
-
+#include <KMimeTypeTrader>
 
 class MimeAssociations : public QObject
 {
@@ -48,7 +47,13 @@ MimeAssociations::~MimeAssociations() {}
 void MimeAssociations::process()
 {
     QTextStream out(stdout);
-    out << mime << endl;
+
+    KService::List services = KMimeTypeTrader::self()->query(mime);
+
+    for (int i=0; i<services.length(); ++i)
+    {
+        out << services.at(i)->entryPath() << endl;
+    }
 
     emit done();
 }
@@ -79,33 +84,3 @@ int main(int argc, char *argv[])
 
     return application.exec();
 }
-
-
-
-
-/*
-
-from PyQt4.QtGui import QApplication
-
-from PyKDE4.kdecore import KMimeType
-from PyKDE4.kdecore import KMimeTypeTrader
-
-
-parser = argparse.ArgumentParser(description = '')
-parser.add_argument('mime_type', metavar = 'MIME-type', type = unicode,
-  help = 'MIME type')
-
-args = parser.parse_args()
-
-app = QApplication(sys.argv)
-
-if KMimeType.mimeType(args.mime_type, KMimeType.ResolveAliases) is None:
-    print('Bad mime type: ' + args.mime_type, file = sys.stderr)
-    raise SystemExit(1)
-
-trader = KMimeTypeTrader.self()
-services = trader.query(args.mime_type)
-desktop_locs = [ unicode(service.entryPath()) for service in services ]
-for desktop_loc in desktop_locs:
-    print(desktop_loc)
-*/

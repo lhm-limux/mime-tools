@@ -21,9 +21,19 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set (CMAKE_CXX_STANDARD 11)
 
-find_package(Qt5Core REQUIRED)
-set(QT_MINIMUM_VERSION 5.2.0)
+find_package(ECM 0.0.11 REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
+include(KDEInstallDirs)
+include(KDECMakeSettings)
+include(KDECompilerSettings)
+include(FeatureSummary)
+
+set(QT_MINIMUM_VERSION 5.2.0)
+find_package(Qt5 ${QT_MINIMUM_VERSION} REQUIRED COMPONENTS Core)
+find_package(KF5 REQUIRED COMPONENTS Service)
 
 add_executable(mime-assocs-for mime-assocs-for.cpp)
-target_link_libraries(mime-assocs-for Qt5::Core)
+target_link_libraries(mime-assocs-for Qt5::Core KF5::Service)
+
+feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
