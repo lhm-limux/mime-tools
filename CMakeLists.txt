@@ -36,4 +36,6 @@ find_package(KF5 REQUIRED COMPONENTS Service)
 add_executable(mime-assocs-for mime-assocs-for.cpp)
 target_link_libraries(mime-assocs-for Qt5::Core KF5::Service)
 
+install(TARGETS mime-assocs-for DESTINATION bin)
+
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
