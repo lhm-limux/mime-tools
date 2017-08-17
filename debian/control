@@ -1,0 +1,22 @@
+Source: mime-tools
+Maintainer: Max Harmathy <max.harmathy@muenchen.de>
+Section: lhm/utils
+Priority: optional
+Build-Depends:
+ cmake,
+ debhelper,
+ extra-cmake-modules,
+ help2man,
+ libkf5service-dev,
+ qtbase5-dev,
+Standards-Version: 4.0.1.0
+
+Package: mime-tools
+Architecture: any
+Depends:
+ ${misc:Depends},
+ libc6,
+ libkf5service-bin,
+Description: Tools for Mime-Type
+ Gather information about Mime-Types and Assiciations.
+
