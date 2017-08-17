@@ -24,10 +24,12 @@ int main(int argc, char *argv[])
 {
     QCoreApplication application(argc, argv);
     QCoreApplication::setApplicationName("mime-assocs-for");
+    QCoreApplication::setApplicationVersion("0.1");
 
     QCommandLineParser parser;
     parser.setApplicationDescription("Given a MIME type, print associated desktop files line-wise.");
     parser.addHelpOption();
+    parser.addVersionOption();
     parser.addPositionalArgument("mimeType", "MIME type");
 
     parser.process(application);
